@@ -27,71 +27,109 @@ OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
+# --- БАРЛЫҚ МӘТІНДЕР (i18n) ---
+UI = {
+    "kk": {
+        "menu_direction": "🧭 Бағыт таңдау",
+        "menu_internship": "🎯 Стажировка табу",
+        "menu_roadmap": "🗺 3 айлық roadmap",
+        "menu_resume": "📄 Resume анализ",
+        "menu_chat": "💬 Еркін чат",
+        "menu_reset": "♻️ Тілді/Режимді ауыстыру",
+        "welcome": "🚀 *SkillBridge AI*\n\nМен саған:\n• қай IT бағыт саған жақын екенін\n• қай стажировка лайық екенін\n• 3 айлық roadmap\n• resume анализ\nайтып берем.\n\nТөменнен режим таңда:",
+        "reset_msg": "♻️ Reset болды.\nҚайта режим таңда:",
+        "prompt_direction": "🧭 Қызығатын технологияңды, ұнайтын сабақтарыңды, не жасағаныңды жаз.",
+        "prompt_internship": "🎯 Білетін технологияларыңды жаз. Мысалы: Java, Spring, SQL, Git.",
+        "prompt_roadmap": "🗺 Қазір не білетініңді және қай бағытқа барғың келетінін жаз.",
+        "prompt_resume": "📄 Resume файлыңды жібер (PDF/DOCX/TXT) немесе мәтінін осында таста.",
+        "prompt_chat": "💬 Еркін сұрағыңды жаза бер. Мен SkillBridge ретінде жауап берем.",
+        "need_resume_mode": "Алдымен *📄 Resume анализ* режимін таңда.",
+        "only_files": "Тек PDF, DOCX, TXT жібер.",
+        "no_text": "Файлдан мәтін оқылмады.",
+        "error": "Қате шықты:",
+        "help": "Командалар:\n/start — басты меню\n/help — көмек\n\nResume анализ үшін PDF / DOCX / TXT файл жібер.",
+        "resume_ready": "📄 *Resume анализ дайын*",
+        "direction": "Бағыт:",
+        "skills": "Skills:",
+        "not_found": "табылмады",
+        "summary": "Қысқаша:",
+        "strengths": "*Күшті жақтары:*",
+        "gaps": "*Толықтыру керек (Gap-тар):*",
+        "matches": "*Лайық стажировкалар:*",
+        "roadmap_title": "🗺 *3 айлық roadmap:*",
+        "ai_lang": "Kazakh"
+    },
+    "ru": {
+        "menu_direction": "🧭 Выбор направления",
+        "menu_internship": "🎯 Найти стажировку",
+        "menu_roadmap": "🗺 Roadmap на 3 месяца",
+        "menu_resume": "📄 Анализ резюме",
+        "menu_chat": "💬 Свободный чат",
+        "menu_reset": "♻️ Сменить язык/режим",
+        "welcome": "🚀 *SkillBridge AI*\n\nЯ помогу тебе:\n• выбрать подходящее IT-направление\n• найти подходящую стажировку\n• составить roadmap на 3 месяца\n• проанализировать резюме\n\nВыбери режим ниже:",
+        "reset_msg": "♻️ Сброс выполнен.\nВыбери режим:",
+        "prompt_direction": "🧭 Напиши, какие технологии тебе интересны, любимые предметы и что ты уже создавал.",
+        "prompt_internship": "🎯 Напиши технологии, которые ты знаешь. Например: Java, Spring, SQL, Git.",
+        "prompt_roadmap": "🗺 Напиши, что ты уже знаешь и в каком направлении хочешь развиваться.",
+        "prompt_resume": "📄 Отправь файл резюме (PDF/DOCX/TXT) или вставь текст сюда.",
+        "prompt_chat": "💬 Задавай любой вопрос. Я отвечу как ассистент SkillBridge.",
+        "need_resume_mode": "Сначала выбери режим *📄 Анализ резюме*.",
+        "only_files": "Отправляй только файлы PDF, DOCX, TXT.",
+        "no_text": "Текст из файла не прочитан.",
+        "error": "Произошла ошибка:",
+        "help": "Команды:\n/start — главное меню\n/help — помощь\n\nДля анализа резюме отправь файл PDF / DOCX / TXT.",
+        "resume_ready": "📄 *Анализ резюме готов*",
+        "direction": "Направление:",
+        "skills": "Навыки:",
+        "not_found": "не найдены",
+        "summary": "Саммари:",
+        "strengths": "*Сильные стороны:*",
+        "gaps": "*Что нужно подтянуть:*",
+        "matches": "*Подходящие стажировки:*",
+        "roadmap_title": "🗺 *Roadmap на 3 месяца:*",
+        "ai_lang": "Russian"
+    },
+    "en": {
+        "menu_direction": "🧭 Choose Direction",
+        "menu_internship": "🎯 Find Internship",
+        "menu_roadmap": "🗺 3-Month Roadmap",
+        "menu_resume": "📄 Resume Analysis",
+        "menu_chat": "💬 Free Chat",
+        "menu_reset": "♻️ Change Lang/Mode",
+        "welcome": "🚀 *SkillBridge AI*\n\nI can help you:\n• find the right IT direction\n• find a suitable internship\n• create a 3-month roadmap\n• analyze your resume\n\nChoose a mode below:",
+        "reset_msg": "♻️ Reset successful.\nChoose a mode:",
+        "prompt_direction": "🧭 Write about the technologies you are interested in, your favorite subjects, and what you have built.",
+        "prompt_internship": "🎯 List the technologies you know. Example: Java, Spring, SQL, Git.",
+        "prompt_roadmap": "🗺 Write down what you currently know and where you want to go.",
+        "prompt_resume": "📄 Send your resume file (PDF/DOCX/TXT) or paste the text here.",
+        "prompt_chat": "💬 Ask me anything. I will answer as the SkillBridge assistant.",
+        "need_resume_mode": "First, select the *📄 Resume Analysis* mode.",
+        "only_files": "Send only PDF, DOCX, TXT files.",
+        "no_text": "No text could be read from the file.",
+        "error": "An error occurred:",
+        "help": "Commands:\n/start — main menu\n/help — help\n\nSend a PDF / DOCX / TXT file for resume analysis.",
+        "resume_ready": "📄 *Resume Analysis Ready*",
+        "direction": "Direction:",
+        "skills": "Skills:",
+        "not_found": "not found",
+        "summary": "Summary:",
+        "strengths": "*Strengths:*",
+        "gaps": "*Areas for Improvement:*",
+        "matches": "*Suitable Internships:*",
+        "roadmap_title": "🗺 *3-Month Roadmap:*",
+        "ai_lang": "English"
+    }
+}
+
 INTERNSHIPS = [
-    {
-        "id": 1,
-        "title": "Java Backend Intern",
-        "company": "Kaspi Tech",
-        "direction": "backend",
-        "skills": ["java", "spring", "sql", "rest", "git", "docker"],
-        "level": "junior",
-    },
-    {
-        "id": 2,
-        "title": "Python Backend Intern",
-        "company": "Kolesa Group",
-        "direction": "backend",
-        "skills": ["python", "django", "fastapi", "sql", "git", "api"],
-        "level": "junior",
-    },
-    {
-        "id": 3,
-        "title": "Frontend Intern",
-        "company": "Yandex Qazaqstan",
-        "direction": "frontend",
-        "skills": ["html", "css", "javascript", "react", "git", "typescript"],
-        "level": "junior",
-    },
-    {
-        "id": 4,
-        "title": "QA Intern",
-        "company": "EPAM",
-        "direction": "qa",
-        "skills": ["testing", "postman", "api", "sql", "jira", "selenium"],
-        "level": "junior",
-    },
-    {
-        "id": 5,
-        "title": "Data Analyst Intern",
-        "company": "Freedom",
-        "direction": "data",
-        "skills": ["python", "sql", "excel", "power bi", "statistics", "pandas"],
-        "level": "junior",
-    },
-    {
-        "id": 6,
-        "title": "ML / AI Intern",
-        "company": "InDrive",
-        "direction": "ai",
-        "skills": ["python", "machine learning", "pandas", "numpy", "sklearn", "sql"],
-        "level": "junior",
-    },
-    {
-        "id": 7,
-        "title": "Mobile Intern",
-        "company": "Beeline",
-        "direction": "mobile",
-        "skills": ["kotlin", "android", "java", "git", "api"],
-        "level": "junior",
-    },
-    {
-        "id": 8,
-        "title": "DevOps Intern",
-        "company": "Aitu Tech",
-        "direction": "devops",
-        "skills": ["linux", "docker", "git", "ci/cd", "bash", "cloud"],
-        "level": "junior",
-    },
+    {"id": 1, "title": "Java Backend Intern", "company": "Kaspi Tech", "direction": "backend", "skills": ["java", "spring", "sql", "rest", "git", "docker"], "level": "junior"},
+    {"id": 2, "title": "Python Backend Intern", "company": "Kolesa Group", "direction": "backend", "skills": ["python", "django", "fastapi", "sql", "git", "api"], "level": "junior"},
+    {"id": 3, "title": "Frontend Intern", "company": "Yandex Qazaqstan", "direction": "frontend", "skills": ["html", "css", "javascript", "react", "git", "typescript"], "level": "junior"},
+    {"id": 4, "title": "QA Intern", "company": "EPAM", "direction": "qa", "skills": ["testing", "postman", "api", "sql", "jira", "selenium"], "level": "junior"},
+    {"id": 5, "title": "Data Analyst Intern", "company": "Freedom", "direction": "data", "skills": ["python", "sql", "excel", "power bi", "statistics", "pandas"], "level": "junior"},
+    {"id": 6, "title": "ML / AI Intern", "company": "InDrive", "direction": "ai", "skills": ["python", "machine learning", "pandas", "numpy", "sklearn", "sql"], "level": "junior"},
+    {"id": 7, "title": "Mobile Intern", "company": "Beeline", "direction": "mobile", "skills": ["kotlin", "android", "java", "git", "api"], "level": "junior"},
+    {"id": 8, "title": "DevOps Intern", "company": "Aitu Tech", "direction": "devops", "skills": ["linux", "docker", "git", "ci/cd", "bash", "cloud"], "level": "junior"},
 ]
 
 DIRECTION_KEYWORDS = {
@@ -151,19 +189,29 @@ def top_matches(user_skills, direction, top_n=5):
     scored.sort(key=lambda x: x[0], reverse=True)
     return scored[:top_n]
 
-def menu_keyboard():
+def language_keyboard():
     return InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("🧭 Бағыт таңдау", callback_data="mode_direction"),
-            InlineKeyboardButton("🎯 Стажировка табу", callback_data="mode_internship"),
+            InlineKeyboardButton("🇰🇿 Қазақша", callback_data="lang_kk"),
+            InlineKeyboardButton("🇷🇺 Русский", callback_data="lang_ru"),
+            InlineKeyboardButton("🇬🇧 English", callback_data="lang_en")
+        ]
+    ])
+
+def menu_keyboard(lang: str):
+    texts = UI[lang]
+    return InlineKeyboardMarkup([
+        [
+            InlineKeyboardButton(texts["menu_direction"], callback_data="mode_direction"),
+            InlineKeyboardButton(texts["menu_internship"], callback_data="mode_internship"),
         ],
         [
-            InlineKeyboardButton("🗺 3 айлық roadmap", callback_data="mode_roadmap"),
-            InlineKeyboardButton("📄 Resume анализ", callback_data="mode_resume"),
+            InlineKeyboardButton(texts["menu_roadmap"], callback_data="mode_roadmap"),
+            InlineKeyboardButton(texts["menu_resume"], callback_data="mode_resume"),
         ],
         [
-            InlineKeyboardButton("💬 Еркін чат", callback_data="mode_chat"),
-            InlineKeyboardButton("♻️ Reset", callback_data="reset"),
+            InlineKeyboardButton(texts["menu_chat"], callback_data="mode_chat"),
+            InlineKeyboardButton(texts["menu_reset"], callback_data="reset"),
         ]
     ])
 
@@ -191,18 +239,19 @@ def openai_text(prompt: str) -> str:
     )
     return response.output_text.strip()
 
-def analyze_resume_with_ai(resume_text: str):
+def analyze_resume_with_ai(resume_text: str, ai_lang: str):
     prompt = f"""
 You are SkillBridge AI.
 Analyze this resume text and return STRICT JSON only.
+IMPORTANT: The values for 'summary', 'strengths', and 'gaps' MUST be written in {ai_lang} language.
 
 Schema:
 {{
-  "summary": "short summary",
+  "summary": "short summary in {ai_lang}",
   "direction": "backend/frontend/qa/data/ai/mobile/devops",
   "skills": ["skill1", "skill2"],
-  "strengths": ["point1", "point2"],
-  "gaps": ["gap1", "gap2"]
+  "strengths": ["point1 in {ai_lang}", "point2 in {ai_lang}"],
+  "gaps": ["gap1 in {ai_lang}", "gap2 in {ai_lang}"]
 }}
 
 Resume:
@@ -220,10 +269,10 @@ Resume:
         }
     return data
 
-def roadmap_with_ai(direction: str, skills: list, user_text: str):
+def roadmap_with_ai(direction: str, skills: list, user_text: str, ai_lang: str):
     prompt = f"""
 You are SkillBridge AI.
-Write a practical 3-month roadmap in Kazakh for a student.
+Write a practical 3-month roadmap in {ai_lang} language for a student.
 
 Direction: {direction}
 Current skills: {skills}
@@ -239,7 +288,7 @@ Rules:
 """
     return openai_text(prompt)
 
-def free_chat_with_ai(user_text: str, mode: str):
+def free_chat_with_ai(user_text: str, mode: str, ai_lang: str):
     prompt = f"""
 You are SkillBridge AI.
 
@@ -247,8 +296,7 @@ Identity:
 - You are the assistant of SkillBridge startup
 - You help students choose IT direction, internships, roadmap, and CV positioning
 - Speak naturally, warmly, casually
-- Default language: Kazakh
-- If user writes in Russian/English, adapt
+- Default language for your response MUST BE: {ai_lang}
 - Be direct, practical, confident
 
 Current mode: {mode}
@@ -259,57 +307,71 @@ User message:
     return openai_text(prompt)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data["mode"] = "chat"
-    text = (
-        "🚀 *SkillBridge AI*\n\n"
-        "Мен саған:\n"
-        "• қай IT бағыт саған жақын екенін\n"
-        "• қай стажировка лайық екенін\n"
-        "• 3 айлық roadmap\n"
-        "• resume анализ\n"
-        "айтып берем.\n\n"
-        "Төменнен режим таңда:"
+    context.user_data.clear()
+    await update.message.reply_text(
+        "Сәлем! Тілді таңдаңыз / Привет! Выберите язык / Hello! Choose your language:",
+        reply_markup=language_keyboard()
     )
-    await update.message.reply_text(text, reply_markup=menu_keyboard(), parse_mode="Markdown")
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     data = query.data
 
+    # Тіл таңдау логикасы
+    if data in ["lang_kk", "lang_ru", "lang_en"]:
+        lang_code = data.split("_")[1]
+        context.user_data["lang"] = lang_code
+        context.user_data["mode"] = "chat"
+        
+        texts = UI[lang_code]
+        await query.edit_message_text(
+            texts["welcome"], 
+            reply_markup=menu_keyboard(lang_code), 
+            parse_mode="Markdown"
+        )
+        return
+
+    lang = context.user_data.get("lang", "kk")
+    texts = UI[lang]
+
     if data == "reset":
         context.user_data.clear()
-        context.user_data["mode"] = "chat"
         await query.edit_message_text(
-            "♻️ Reset болды.\nҚайта режим таңда:",
-            reply_markup=menu_keyboard()
+            "Тілді таңдаңыз / Выберите язык / Choose language:",
+            reply_markup=language_keyboard()
         )
         return
 
     mapping = {
-        "mode_direction": ("direction", "🧭 Қызығатын технологияңды, ұнайтын сабақтарыңды, не жасағаныңды жаз."),
-        "mode_internship": ("internship", "🎯 Білетін технологияларыңды жаз. Мысалы: Java, Spring, SQL, Git."),
-        "mode_roadmap": ("roadmap", "🗺 Қазір не білетініңді және қай бағытқа барғың келетінін жаз."),
-        "mode_resume": ("resume", "📄 Resume файлыңды жібер немесе мәтінін осында таста."),
-        "mode_chat": ("chat", "💬 Еркін сұрағыңды жаза бер. Мен SkillBridge ретінде жауап берем."),
+        "mode_direction": ("direction", texts["prompt_direction"]),
+        "mode_internship": ("internship", texts["prompt_internship"]),
+        "mode_roadmap": ("roadmap", texts["prompt_roadmap"]),
+        "mode_resume": ("resume", texts["prompt_resume"]),
+        "mode_chat": ("chat", texts["prompt_chat"]),
     }
 
-    mode, text = mapping[data]
-    context.user_data["mode"] = mode
-    await query.edit_message_text(text, reply_markup=menu_keyboard())
+    if data in mapping:
+        mode, text = mapping[data]
+        context.user_data["mode"] = mode
+        await query.edit_message_text(text, reply_markup=menu_keyboard(lang))
 
 async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text.strip()
     mode = context.user_data.get("mode", "chat")
+    lang = context.user_data.get("lang", "kk")
+    texts = UI[lang]
+    ai_lang = texts["ai_lang"]
 
     if mode == "direction":
         skills = extract_skills_local(user_text)
         direction = detect_direction_local(user_text)
         reply = free_chat_with_ai(
             f"User asks for direction selection.\nText: {user_text}\nDetected direction: {direction}\nSkills: {skills}",
-            mode
+            mode,
+            ai_lang
         )
-        await update.message.reply_text(reply, reply_markup=menu_keyboard())
+        await update.message.reply_text(reply, reply_markup=menu_keyboard(lang))
         return
 
     if mode == "internship":
@@ -317,61 +379,62 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
         direction = detect_direction_local(user_text)
         matches = top_matches(skills, direction, top_n=5)
 
-        lines = [f"🎯 *Саған лайық стажировкалар*"]
-        lines.append(f"Бағыт: *{direction}*")
+        lines = [f"🎯 {texts['matches']}"]
+        lines.append(f"{texts['direction']} *{direction}*")
         lines.append("")
         for score, item in matches:
             lines.append(f"*{item['company']}* — {item['title']}")
             lines.append(f"{bars(score)} {score}%")
-            lines.append(f"Керек skills: {', '.join(item['skills'])}")
+            lines.append(f"{texts['skills']} {', '.join(item['skills'])}")
             lines.append("")
 
         ai_tip = free_chat_with_ai(
-            f"Give short practical advice in Kazakh for internship targeting. User text: {user_text}. Direction: {direction}. Skills: {skills}",
-            mode
+            f"Give short practical advice for internship targeting. User text: {user_text}. Direction: {direction}. Skills: {skills}",
+            mode,
+            ai_lang
         )
 
         await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
-        await update.message.reply_text(ai_tip, reply_markup=menu_keyboard())
+        await update.message.reply_text(ai_tip, reply_markup=menu_keyboard(lang))
         return
 
     if mode == "roadmap":
         skills = extract_skills_local(user_text)
         direction = detect_direction_local(user_text)
-        roadmap = roadmap_with_ai(direction, skills, user_text)
-        await update.message.reply_text(roadmap, reply_markup=menu_keyboard())
+        roadmap = roadmap_with_ai(direction, skills, user_text, ai_lang)
+        await update.message.reply_text(roadmap, reply_markup=menu_keyboard(lang))
         return
 
     if mode == "resume":
-        analysis = analyze_resume_with_ai(user_text)
+        analysis = analyze_resume_with_ai(user_text, ai_lang)
         skills = analysis.get("skills", []) or extract_skills_local(user_text)
         direction = analysis.get("direction") or detect_direction_local(user_text)
         matches = top_matches(skills, direction, top_n=3)
 
         lines = []
-        lines.append("📄 *Resume анализ нәтижесі*")
-        lines.append(f"Бағыт: *{direction}*")
-        lines.append(f"Skills: {', '.join(skills) if skills else 'табылмады'}")
+        lines.append(texts["resume_ready"])
+        lines.append(f"{texts['direction']} *{direction}*")
+        lines.append(f"{texts['skills']} {', '.join(skills) if skills else texts['not_found']}")
         lines.append("")
-        lines.append(f"Қысқаша: {analysis.get('summary', '-')}")
+        lines.append(f"{texts['summary']} {analysis.get('summary', '-')}")
         lines.append("")
-        lines.append("*Күшті жақтары:*")
+        lines.append(texts["strengths"])
         for s in analysis.get("strengths", []):
             lines.append(f"• {s}")
         lines.append("")
-        lines.append("*Gap-тар:*")
+        lines.append(texts["gaps"])
         for g in analysis.get("gaps", []):
             lines.append(f"• {g}")
         lines.append("")
-        lines.append("*Лайық стажировкалар:*")
+        lines.append(texts["matches"])
         for score, item in matches:
             lines.append(f"• {item['company']} / {item['title']} — {score}%")
 
-        await update.message.reply_text("\n".join(lines), parse_mode="Markdown", reply_markup=menu_keyboard())
+        await update.message.reply_text("\n".join(lines), parse_mode="Markdown", reply_markup=menu_keyboard(lang))
         return
 
-    reply = free_chat_with_ai(user_text, mode)
-    await update.message.reply_text(reply, reply_markup=menu_keyboard())
+    reply = free_chat_with_ai(user_text, mode, ai_lang)
+    await update.message.reply_text(reply, reply_markup=menu_keyboard(lang))
 
 def extract_text_from_file(path: str) -> str:
     ext = Path(path).suffix.lower()
@@ -390,19 +453,22 @@ def extract_text_from_file(path: str) -> str:
         doc = DocxDocument(path)
         return "\n".join(p.text for p in doc.paragraphs)
 
-    raise ValueError("Қолдайтын форматтар: PDF, DOCX, TXT")
+    raise ValueError("Only PDF, DOCX, TXT")
 
 async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     document = update.message.document
     mode = context.user_data.get("mode", "chat")
+    lang = context.user_data.get("lang", "kk")
+    texts = UI[lang]
+    ai_lang = texts["ai_lang"]
 
     if mode != "resume":
-        await update.message.reply_text("Алдымен *📄 Resume анализ* режимін таңда.", parse_mode="Markdown", reply_markup=menu_keyboard())
+        await update.message.reply_text(texts["need_resume_mode"], parse_mode="Markdown", reply_markup=menu_keyboard(lang))
         return
 
     suffix = Path(document.file_name or "").suffix.lower()
     if suffix not in [".pdf", ".docx", ".txt"]:
-        await update.message.reply_text("Тек PDF, DOCX, TXT жібер.")
+        await update.message.reply_text(texts["only_files"])
         return
 
     tg_file = await context.bot.get_file(document.file_id)
@@ -415,43 +481,43 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         text = extract_text_from_file(temp_path)
         if not text.strip():
-            await update.message.reply_text("Файлдан мәтін оқылмады.")
+            await update.message.reply_text(texts["no_text"])
             return
 
-        analysis = analyze_resume_with_ai(text)
+        analysis = analyze_resume_with_ai(text, ai_lang)
         skills = analysis.get("skills", []) or extract_skills_local(text)
         direction = analysis.get("direction") or detect_direction_local(text)
         matches = top_matches(skills, direction, top_n=5)
-        roadmap = roadmap_with_ai(direction, skills, "Resume based roadmap")
+        roadmap = roadmap_with_ai(direction, skills, "Resume based roadmap", ai_lang)
 
         lines = []
-        lines.append("📄 *Resume анализ дайын*")
-        lines.append(f"Бағыт: *{direction}*")
-        lines.append(f"Skills: {', '.join(skills) if skills else 'табылмады'}")
+        lines.append(texts["resume_ready"])
+        lines.append(f"{texts['direction']} *{direction}*")
+        lines.append(f"{texts['skills']} {', '.join(skills) if skills else texts['not_found']}")
         lines.append("")
-        lines.append(f"*Summary:* {analysis.get('summary', '-')}")
+        lines.append(f"*{texts['summary']}* {analysis.get('summary', '-')}")
         lines.append("")
-        lines.append("*Top internship matches:*")
+        lines.append(texts["matches"])
         for score, item in matches:
             lines.append(f"• {item['company']} — {item['title']} — {score}%")
 
         if analysis.get("strengths"):
             lines.append("")
-            lines.append("*Күшті жақтары:*")
+            lines.append(texts["strengths"])
             for s in analysis["strengths"]:
                 lines.append(f"• {s}")
 
         if analysis.get("gaps"):
             lines.append("")
-            lines.append("*Толықтыру керек:*")
+            lines.append(texts["gaps"])
             for g in analysis["gaps"]:
                 lines.append(f"• {g}")
 
         await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
-        await update.message.reply_text("🗺 *3 айлық roadmap:*\n\n" + roadmap, parse_mode="Markdown", reply_markup=menu_keyboard())
+        await update.message.reply_text(f"{texts['roadmap_title']}\n\n" + roadmap, parse_mode="Markdown", reply_markup=menu_keyboard(lang))
 
     except Exception as e:
-        await update.message.reply_text(f"Қате шықты: {e}")
+        await update.message.reply_text(f"{texts['error']} {e}")
     finally:
         try:
             os.remove(temp_path)
@@ -459,12 +525,8 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "Командалар:\n"
-        "/start — басты меню\n"
-        "/help — көмек\n\n"
-        "Resume анализ үшін PDF / DOCX / TXT файл жібер."
-    )
+    lang = context.user_data.get("lang", "kk")
+    await update.message.reply_text(UI[lang]["help"])
 
 def main():
     if not TELEGRAM_BOT_TOKEN:
@@ -480,7 +542,7 @@ def main():
     app.add_handler(MessageHandler(filters.Document.ALL, handle_document))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
 
-    print("SkillBridge bot running...")
+    print("SkillBridge bot is running with 3-language support...")
     app.run_polling()
 
 if __name__ == "__main__":
